@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SyntaxSquad — NLP Writing Assistant</title>
+<style>
+    :root {
+        --bg: #050914;
+        --bg-elevated: #0b1328;
+        --bg-card: #0e1730;
+        --border: #1e2c4e;
+        --border-soft: #16213d;
+        --text: #e9edfa;
+        --text-dim: #8b94b8;
+        --text-faint: #535d82;
+        --accent: #4f8cff;
+        --accent2: #a855f7;
+        --accent3: #ff5fa8;
+        --accent-dim: #2b3e6e;
+        --good: #3ddc84;
+        --changed-bg: #30203f;
+        --changed-border: #7a3ba0;
+        --changed-text: #e88bff;
+        --tag-bg: #121c38;
+        --radius: 14px;
+
+        --pos-noun: #4f8cff;  --pos-verb: #3ddc84;  --pos-adj: #ffb84f;
+        --pos-adv: #ff5fa8;   --pos-pron: #a855f7;  --pos-det: #22d3ee;
+        --pos-adp: #facc15;   --pos-num: #60a5fa;    --pos-conj: #c7d2fe;
+        --pos-prt: #34d399;   --pos-other: #8b94b8;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--bg); }
+
+    body {
+        font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 44px 20px 90px;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+        position: relative;
+        overflow-x: hidden;
+        min-height: 100vh;
+    }
+
+    /* Ambient animated background glow — pure CSS, no external assets. */
+    .glow {
+        position: fixed;
+        top: -20%;
+        left: 50%;
+        width: 1100px;
+        height: 1100px;
+        transform: translateX(-50%);
+        background:
+            radial-gradient(circle at 25% 15%, rgba(79,140,255,0.16), transparent 42%),
+            radial-gradient(circle at 75% 55%, rgba(168,85,247,0.13), transparent 42%),
+            radial-gradient(circle at 45% 90%, rgba(255,95,168,0.09), transparent 42%),
+            radial-gradient(circle at 90% 10%, rgba(34,211,238,0.08), transparent 40%);
+        animation: drift 18s ease-in-out infinite alternate;
+        pointer-events: none;
+        z-index: 0;
+    }
+    @keyframes drift {
+        0%   { transform: translateX(-52%) translateY(0) rotate(0deg); }
+        100% { transform: translateX(-48%) translateY(30px) rotate(6deg); }
+    }
+
+    .wrap { position: relative; z-index: 1; }
+
+    /* ---------- Header ---------- */
+    .brand-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+
+    .logo {
+        width: 38px; height: 38px; border-radius: 10px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2) 55%, var(--accent3));
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 800; font-size: 1.05rem; color: #050914;
+        box-shadow: 0 0 24px rgba(79,140,255,0.4);
+        flex-shrink: 0;
+    }
+
+    h1 {
+        font-size: 1.65rem;
+        margin: 0;
+        background: linear-gradient(90deg, var(--accent), var(--accent2) 50%, var(--accent3));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+    }
+
+    .subtitle {
+        color: var(--text-dim);
+        font-size: 0.92rem;
+        margin: 4px 0 22px;
+    }
+
+    /* ---------- Pipeline strip ---------- */
+    .pipeline {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin-bottom: 26px;
+        padding: 14px 16px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius);
+        overflow-x: auto;
+    }
+    .stage {
+        display: flex; flex-direction: column; align-items: center;
+        gap: 6px; min-width: 84px; flex-shrink: 0;
+    }
+    .stage .dot {
+        width: 30px; height: 30px; border-radius: 50%;
+        background: var(--tag-bg);
+        border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.85rem;
+    }
+    .stage.on .dot {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border-color: transparent;
+        box-shadow: 0 0 14px rgba(79,140,255,0.5);
+    }
+    .stage span.label {
+        font-size: 0.66rem; color: var(--text-faint);
+        text-align: center; letter-spacing: 0.02em;
+    }
+    .stage.on span.label { color: var(--text-dim); }
+    .connector {
+        flex: 1;
+        height: 2px;
+        min-width: 16px;
+        background: var(--border);
+        margin: 0 -2px;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    .connector.on::after {
+        content: '';
+        position: absolute; inset: 0;
+        background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+        animation: flow 1.2s linear infinite;
+    }
+    @keyframes flow {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    /* ---------- Input card ---------- */
+    .input-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-card:focus-within {
+        border-color: var(--accent-dim);
+        box-shadow: 0 0 0 3px rgba(79,140,255,0.10);
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 110px;
+        font-size: 1.08rem;
+        font-family: inherit;
+        padding: 0;
+        background: transparent;
+        color: var(--text);
+        border: none;
+        outline: none;
+        resize: vertical;
+    }
+
+    textarea::placeholder { color: var(--text-faint); }
+
+    .status-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+        min-height: 22px;
+    }
+
+    .status {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .spinner {
+        width: 12px;
+        height: 12px;
+        border: 2px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+    .spinner.active { opacity: 1; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .clear-btn {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s;
+    }
+    .clear-btn:hover { color: var(--text); border-color: var(--accent-dim); }
+
+    /* ---------- Example chips ---------- */
+    .examples { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .examples .ex-label { font-size: 0.76rem; color: var(--text-faint); margin-right: 2px; }
+    .example-chip {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        background: var(--tag-bg);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 6px 13px;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+    .example-chip:hover {
+        color: var(--accent);
+        border-color: var(--accent-dim);
+        background: rgba(168,85,247,0.10);
+        transform: translateY(-1px);
+    }
+
+    /* ---------- Result card ---------- */
+    .result {
+        margin-top: 22px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .result.visible { opacity: 1; transform: translateY(0); }
+
+    .result h3 {
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--text-faint);
+        margin: 0 0 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .result h3::before {
+        content: '';
+        width: 6px; height: 6px; border-radius: 2px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        flex-shrink: 0;
+    }
+    .result h3:not(:first-child) { margin-top: 24px; }
+
+    .token {
+        display: inline-flex;
+        flex-direction: column;
+        margin: 0 6px 8px 0;
+        padding: 7px 11px;
+        border-radius: 9px;
+        background: var(--tag-bg);
+        border: 1px solid var(--border);
+        font-size: 0.95rem;
+        opacity: 0;
+        animation: tokenIn 0.32s ease forwards;
+    }
+    @keyframes tokenIn {
+        from { opacity: 0; transform: translateY(4px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .token.changed {
+        background: var(--changed-bg);
+        border-color: var(--changed-border);
+    }
+    .token .tag {
+        font-size: 0.65rem;
+        letter-spacing: 0.04em;
+        margin-top: 3px;
+        font-weight: 700;
+    }
+    .token .orig {
+        text-decoration: line-through;
+        color: var(--text-dim);
+        margin-right: 4px;
+    }
+    .token .fix { color: var(--changed-text); font-weight: 600; }
+
+    .corrected-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .corrected-text {
+        font-size: 1.08rem;
+        color: var(--good);
+        font-weight: 500;
+    }
+    .copy-btn {
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 3px 11px;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+    .copy-btn:hover { color: var(--accent); border-color: var(--accent-dim); }
+    .copy-btn.copied { color: var(--good); border-color: var(--good); }
+
+    .suggestions { display: flex; flex-direction: column; gap: 8px; }
+    .suggestion-row {
+        display: flex; align-items: center; gap: 10px;
+        opacity: 0;
+        animation: tokenIn 0.32s ease forwards;
+    }
+    .suggestion-word {
+        padding: 6px 14px;
+        background: rgba(79, 140, 255, 0.12);
+        border: 1px solid var(--accent-dim);
+        color: var(--accent);
+        border-radius: 999px;
+        font-size: 0.9rem;
+        min-width: 86px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    .suggestion-bar-track {
+        flex: 1;
+        height: 6px;
+        background: var(--tag-bg);
+        border-radius: 999px;
+        overflow: hidden;
+    }
+    .suggestion-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+        border-radius: 999px;
+        width: 0%;
+        transition: width 0.4s ease;
+    }
+
+    .pos-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 700;
+        padding: 2px 9px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        letter-spacing: 0.03em;
+    }
+
+    .expected-pos {
+        color: var(--text-dim);
+        font-weight: 400;
+        text-transform: none;
+        letter-spacing: 0;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .result h3 .expected-pos { margin-left: auto; }
+
+    .context-note {
+        margin-top: 14px;
+        font-size: 0.78rem;
+        color: var(--text-faint);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .empty-hint {
+        color: var(--text-faint);
+        font-size: 0.85rem;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    /* ---------- Footer tech strip ---------- */
+    .tech-footer {
+        margin-top: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+    .tech-chip {
+        font-size: 0.72rem;
+        color: var(--text-faint);
+        border: 1px solid var(--border-soft);
+        background: var(--bg-elevated);
+        padding: 5px 12px;
+        border-radius: 999px;
+    }
+</style>
+</head>
+<body>
+    <div class="glow"></div>
+    <div class="wrap">
+        <div class="brand-row">
+            <div class="logo">S</div>
+            <h1>SyntaxSquad</h1>
+        </div>
+        <p class="subtitle">NLP-Based Intelligent Writing Assistant — Spell correction · Next-word prediction (bigram + trigram) · POS-aware tagging</p>
+
+        <div class="pipeline" id="pipeline">
+            <div class="stage" data-stage="0"><div class="dot">1</div><span class="label">Tokenize</span></div>
+            <div class="connector" data-conn="0"></div>
+            <div class="stage" data-stage="1"><div class="dot">2</div><span class="label">Spell Fix</span></div>
+            <div class="connector" data-conn="1"></div>
+            <div class="stage" data-stage="2"><div class="dot">3</div><span class="label">POS Tag</span></div>
+            <div class="connector" data-conn="2"></div>
+            <div class="stage" data-stage="3"><div class="dot">4</div><span class="label">N-Gram LM</span></div>
+            <div class="connector" data-conn="3"></div>
+            <div class="stage" data-stage="4"><div class="dot">5</div><span class="label">Suggest</span></div>
+        </div>
+
+        <div class="input-card">
+            <textarea id="input" placeholder="Start typing, e.g. &quot;Teh quick brown fox jumpd ovr the lazy dog&quot;" autofocus></textarea>
+            <div class="status-row">
+                <div class="status"><div class="spinner" id="spinner"></div><span id="status-text"></span></div>
+                <button class="clear-btn" id="clear-btn">Clear</button>
+            </div>
+            <div class="examples">
+                <span class="ex-label">Try:</span>
+                <span class="example-chip" data-text="Teh quick brown fox jumpd ovr the lazy dog">Teh quick brown fox jumpd ovr...</span>
+                <span class="example-chip" data-text="wht is my name">wht is my name</span>
+                <span class="example-chip" data-text="He recieved a letter from">He recieved a letter from</span>
+                <span class="example-chip" data-text="They are playing in the">They are playing in the</span>
+            </div>
+        </div>
+
+        <div class="result" id="result"></div>
+        <p class="empty-hint" id="empty-hint">Results update automatically as you type.</p>
+
+        <div class="tech-footer">
+            <span class="tech-chip">Noisy Channel + Edit Distance ≤2</span>
+            <span class="tech-chip">Learned Confusion Matrix</span>
+            <span class="tech-chip">Bigram + Trigram LM (Laplace)</span>
+            <span class="tech-chip">HMM + Viterbi POS Tagging</span>
+            <span class="tech-chip">Flask · Vanilla JS</span>
+        </div>
+    </div>
+
+    <script>
+    const input = document.getElementById('input');
+    const resultEl = document.getElementById('result');
+    const spinner = document.getElementById('spinner');
+    const statusText = document.getElementById('status-text');
+    const emptyHint = document.getElementById('empty-hint');
+    const clearBtn = document.getElementById('clear-btn');
+    const pipeline = document.getElementById('pipeline');
+
+    let debounceTimer = null;
+    let lastRequestId = 0;
+
+    const POS_COLORS = {
+        NOUN: 'var(--pos-noun)', VERB: 'var(--pos-verb)', ADJ: 'var(--pos-adj)',
+        ADV: 'var(--pos-adv)', PRON: 'var(--pos-pron)', DET: 'var(--pos-det)',
+        ADP: 'var(--pos-adp)', NUM: 'var(--pos-num)', CONJ: 'var(--pos-conj)',
+        PRT: 'var(--pos-prt)'
+    };
+    function posColor(tag) { return POS_COLORS[tag] || 'var(--pos-other)'; }
+
+    function escapeHtml(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function setPipelineStage(active) {
+        pipeline.querySelectorAll('.stage').forEach(el => {
+            el.classList.toggle('on', active && Number(el.dataset.stage) <= 4);
+        });
+        pipeline.querySelectorAll('.connector').forEach(el => {
+            el.classList.toggle('on', active);
+        });
+    }
+
+    function render(result) {
+        if (!result) {
+            resultEl.classList.remove('visible');
+            emptyHint.style.display = 'block';
+            setPipelineStage(false);
+            return;
+        }
+        emptyHint.style.display = 'none';
+        setPipelineStage(true);
+
+        const tokensHtml = result.tokens.map((t, i) => {
+            const delay = (i * 40) + 'ms';
+            const color = posColor(t.tag);
+            if (t.changed) {
+                return `<span class="token changed" style="animation-delay:${delay}"><span><span class="orig">${escapeHtml(t.original)}</span>&rarr; <span class="fix">${escapeHtml(t.corrected)}</span></span><span class="tag" style="color:${color}">${t.tag}</span></span>`;
+            }
+            return `<span class="token" style="animation-delay:${delay}"><span>${escapeHtml(t.corrected)}</span><span class="tag" style="color:${color}">${t.tag}</span></span>`;
+        }).join('');
+
+        const maxProb = result.suggestions.length ? result.suggestions[0].prob : 1;
+        const suggestionsHtml = result.suggestions.map((s, i) => {
+            const pct = maxProb > 0 ? Math.max(6, (s.prob / maxProb) * 100) : 0;
+            return `
+                <div class="suggestion-row" style="animation-delay:${i * 50}ms">
+                    <span class="suggestion-word">${escapeHtml(s.word)}</span>
+                    <div class="suggestion-bar-track"><div class="suggestion-bar-fill" style="width:${pct}%"></div></div>
+                </div>`;
+        }).join('');
+
+        const contextNote = result.used_trigram_context
+            ? '&#9655; Using trigram context (last two words).'
+            : '&#9655; Using bigram context (only one word of context available).';
+
+        const posColorForExpected = posColor(result.expected_tag);
+
+        resultEl.innerHTML = `
+            <h3>Word-by-word analysis</h3>
+            <div>${tokensHtml}</div>
+            <h3>Corrected text</h3>
+            <div class="corrected-row">
+                <div class="corrected-text">${escapeHtml(result.corrected_text)}</div>
+                <button class="copy-btn" id="copy-btn">Copy</button>
+            </div>
+            <h3>Next-word suggestions
+                <span class="expected-pos">expected next:
+                    <span class="pos-pill" style="background:${posColorForExpected}22;color:${posColorForExpected};border:1px solid ${posColorForExpected}55">${result.expected_tag}</span>
+                </span>
+            </h3>
+            <div class="suggestions">${suggestionsHtml || '<span class="expected-pos">No suggestions available.</span>'}</div>
+            <div class="context-note">${contextNote}</div>
+        `;
+        requestAnimationFrame(() => resultEl.classList.add('visible'));
+
+        const copyBtn = document.getElementById('copy-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(result.corrected_text);
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => { copyBtn.textContent = 'Copy'; copyBtn.classList.remove('copied'); }, 1200);
+                } catch (e) { /* clipboard unavailable — ignore silently */ }
+            });
+        }
+    }
+
+    async function runAnalysis() {
+        const text = input.value;
+        if (!text.trim()) {
+            render(null);
+            statusText.textContent = '';
+            spinner.classList.remove('active');
+            return;
+        }
+
+        const requestId = ++lastRequestId;
+        spinner.classList.add('active');
+        statusText.textContent = 'Analyzing…';
+
+        try {
+            const resp = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const data = await resp.json();
+
+            if (requestId !== lastRequestId) return; // a newer request superseded this one
+
+            render(data.result);
+            statusText.textContent = 'Updated';
+            spinner.classList.remove('active');
+        } catch (e) {
+            if (requestId !== lastRequestId) return;
+            statusText.textContent = 'Error reaching server';
+            spinner.classList.remove('active');
+        }
+    }
+
+    input.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        statusText.textContent = 'Waiting for you to stop typing…';
+        debounceTimer = setTimeout(runAnalysis, 500);
+    });
+
+    clearBtn.addEventListener('click', () => {
+        input.value = '';
+        input.focus();
+        render(null);
+        statusText.textContent = '';
+    });
+
+    document.querySelectorAll('.example-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            input.value = chip.dataset.text;
+            input.focus();
+            clearTimeout(debounceTimer);
+            statusText.textContent = 'Analyzing…';
+            runAnalysis();
+        });
+    });
+    </script>
+</body>
+</html>

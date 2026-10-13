@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+
+# Local copy of the report template (already in template/)
+Student_Activity___Report.zip

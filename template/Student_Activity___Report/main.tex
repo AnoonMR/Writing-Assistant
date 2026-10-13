@@ -1,0 +1,500 @@
+
+\documentclass[12pt,a4paper]{report}
+
+% -------------------- PACKAGES --------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+
+\geometry{margin=1in}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Activity 2 -- Research Report}
+\rhead{Department of MCA}
+\cfoot{\thepage}
+
+% -------------------- DOCUMENT --------------------
+\begin{document}
+
+% -------------------- TITLE PAGE --------------------
+\begin{titlepage}
+\centering
+
+{\Large \textbf{[NAME OF THE INSTITUTION]}}\\[0.3cm]
+{\large Department}\\[1.5cm]
+
+{\Huge \textbf{ACTIVITY 2}}\\[0.4cm]
+{\Large Student Research Report}\\[1.2cm]
+
+\hrule
+\vspace{0.5cm}
+
+{\LARGE \textbf{[TITLE OF THE PROJECT]}}\\[0.4cm]
+{\large Team Name: [TEAM NAME]}
+
+\vspace{0.5cm}
+\hrule
+\vspace{1cm}
+
+\textbf{Submitted by}\\[0.3cm]
+
+\begin{tabular}{ll}
+Student 1: & [Name and USN] \\
+Student 2: & [Name and USN] \\
+Student 3: & [Name and USN] \\
+Student 4: & [Name and USN] \\
+\end{tabular}
+
+\vfill
+
+\textbf{Course:} [Course Name]\\
+\textbf{Faculty:} [Faculty Name]\\
+\textbf{Academic Year:} [Academic Year]\\[0.5cm]
+
+\textbf{Submission Date:} [DD/MM/YYYY]
+
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+% ==================================================
+\chapter{Introduction}
+
+\textbf{Instructions:}
+\begin{itemize}
+    \item Introduce the research topic and its background.
+    \item Explain why the problem is important in the real world.
+    \item Describe the existing challenges and the motivation
+    for selecting this project.
+    \item Clearly define the problem statement.
+    \item State the objectives and scope of the project.
+\end{itemize}
+
+\section{Background}
+
+[Introduce the topic, its applications, and its importance.]
+
+\section{Problem Statement}
+
+[Clearly explain the specific problem that the project
+aims to solve. Identify the limitations of existing
+approaches and the problem your team intends to address.]
+
+\section{Objectives}
+
+\begin{enumerate}
+    \item [Objective 1]
+    \item [Objective 2]
+    \item [Objective 3]
+\end{enumerate}
+
+\section{Scope of the Project}
+
+[Describe what the project covers, its intended users,
+and its major limitations or boundaries.]
+
+% ==================================================
+\chapter{Literature Survey}
+
+\textbf{Instructions:}
+\begin{itemize}
+    \item Review at least 8 relevant research papers
+    (or the number specified by the faculty).
+    \item Prefer peer-reviewed journals, conference papers,
+    and reliable academic publications.
+    \item For every paper, mention its title, publication
+    venue, publication year, methodology, and major results.
+    \item Explain the limitations or research gaps identified.
+    \item Cite every paper in the text and include its full
+    reference in the References section.
+    \item Do not copy abstracts directly. Summarize the
+    research in your own words.
+\end{itemize}
+
+\section{Comparison of Existing Research}
+
+\small
+\begin{longtable}{
+|p{3.2cm}|p{2.0cm}|p{1.0cm}|p{3.0cm}|p{3.0cm}|
+}
+\caption{Comparative Analysis of Research Papers}\\
+\hline
+\textbf{Paper Title} &
+\textbf{Publication} &
+\textbf{Year} &
+\textbf{Methodology} &
+\textbf{Results / Findings} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Paper Title} &
+\textbf{Publication} &
+\textbf{Year} &
+\textbf{Methodology} &
+\textbf{Results / Findings} \\
+\hline
+\endhead
+
+[Paper 1] & [Journal/Conference] & [Year] &
+[Algorithm or approach used] &
+[Main findings and reported performance] \\
+\hline
+
+[Paper 2] & [Journal/Conference] & [Year] &
+[Algorithm or approach used] &
+[Main findings and reported performance] \\
+\hline
+
+[Paper 3] & [Journal/Conference] & [Year] &
+[Algorithm or approach used] &
+[Main findings and reported performance] \\
+\hline
+
+[Paper 4] & [Journal/Conference] & [Year] &
+[Algorithm or approach used] &
+[Main findings and reported performance] \\
+\hline
+
+[Paper 5] & [Journal/Conference] & [Year] &
+[Algorithm or approach used] &
+[Main findings and reported performance] \\
+\hline
+
+\end{longtable}
+\normalsize
+
+\section{Research Gap}
+
+[Identify what is missing, insufficient, or unresolved
+in the existing studies. Explain how your project attempts
+to address at least one of these gaps.]
+
+% ==================================================
+\chapter{Methodology}
+
+\textbf{Instructions:}
+\begin{itemize}
+    \item Explain the complete workflow of your proposed solution.
+    \item Describe the dataset, its source, and its characteristics.
+    \item Explain data preprocessing and feature selection, if applicable.
+    \item Describe the algorithms, models, tools, and technologies used.
+    \item Include a system architecture or workflow diagram.
+    \item Explain the training, validation, and testing procedure,
+    wherever applicable.
+    \item The methodology must be detailed enough for another
+    student to understand and reproduce your work.
+\end{itemize}
+
+\section{Proposed Approach}
+
+[Describe the proposed solution and how it addresses
+the problem statement.]
+
+\section{Dataset Description}
+
+\begin{itemize}
+    \item Dataset name and source: [Provide details]
+    \item Number of samples: [Enter count]
+    \item Number of features: [Enter count]
+    \item Target classes: [List classes, if applicable]
+    \item Preprocessing steps: [Describe steps]
+\end{itemize}
+
+\section{Algorithms and Technologies}
+
+[Describe the algorithms, libraries, programming languages,
+frameworks, and tools used in the implementation.]
+
+\section{System Workflow}
+
+% Upload your workflow diagram to the Overleaf project
+% and replace workflow.png with its filename.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering
+Insert your system architecture or workflow diagram here.}}
+% \includegraphics[width=0.85\textwidth]{workflow.png}
+\caption{Proposed System Workflow}
+\label{fig:workflow}
+\end{figure}
+
+% ==================================================
+\chapter{Experimental Details and Results}
+
+\textbf{Instructions:}
+\begin{itemize}
+    \item Mention the hardware and software environment.
+    \item Describe the experimental setup and parameter settings.
+    \item Specify the training and testing split, where applicable.
+    \item Report the actual results obtained from your implementation.
+    \item Use suitable evaluation metrics for your problem.
+    \item Include screenshots of actual outputs and plots.
+    \item For classification projects, include the confusion matrix
+    and explain the values.
+    \item Compare your results with baseline models or published
+    results only when the comparison is valid.
+\end{itemize}
+
+\section{Experimental Environment}
+
+\begin{itemize}
+    \item Programming language: [Python / Java / Other]
+    \item Development environment: [IDE / Notebook / Platform]
+    \item Libraries and frameworks: [List]
+    \item Hardware configuration: [CPU / GPU / RAM]
+    \item Dataset split: [Training / Validation / Testing]
+\end{itemize}
+
+\section{Evaluation Metrics}
+
+[Define the evaluation metrics appropriate to your project.
+For a classification task, these may include accuracy,
+precision, recall, F1-score, and ROC-AUC.]
+
+\section{Experimental Results}
+
+\begin{table}[H]
+\centering
+\caption{Performance of the Proposed Model}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Evaluation Metric} & \textbf{Obtained Value} \\
+\hline
+Accuracy & [Value or N/A] \\
+\hline
+Precision & [Value or N/A] \\
+\hline
+Recall & [Value or N/A] \\
+\hline
+F1-score & [Value or N/A] \\
+\hline
+Other relevant metric & [Value or N/A] \\
+\hline
+\end{tabular}
+\end{table}
+
+[Interpret the results. Explain what the metrics indicate
+about the performance of your approach. Use N/A for metrics
+that are not applicable and justify the choice of metrics.]
+
+\section{Confusion Matrix}
+
+\textbf{Instructions:}
+Include the confusion matrix generated by your actual model.
+Label the axes and classes clearly. Explain true positives,
+true negatives, false positives, and false negatives
+where applicable. For multiclass classification, explain
+the major misclassifications between classes.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering
+Insert your actual confusion matrix screenshot here.}}
+% \includegraphics[width=0.65\textwidth]{confusion_matrix.png}
+\caption{Confusion Matrix of the Proposed Model}
+\label{fig:confusion}
+\end{figure}
+
+\section{Output Screenshots}
+
+\textbf{Instructions:}
+Include screenshots showing actual execution of your project.
+Screenshots should be readable and relevant. Add a caption
+and briefly explain each output.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering
+Insert your actual project output screenshot here.}}
+% \includegraphics[width=0.85\textwidth]{results.png}
+\caption{Sample Output of the Proposed System}
+\label{fig:output}
+\end{figure}
+
+% ==================================================
+\chapter{Error Analysis}
+
+\textbf{Instructions:}
+\begin{itemize}
+    \item Identify incorrect predictions, failures, or unexpected outputs.
+    \item Explain why these errors may have occurred.
+    \item Discuss the impact of data quality, class imbalance,
+    model limitations, or parameter selection, as relevant.
+    \item Provide examples or screenshots of failure cases, if available.
+    \item Suggest practical ways to reduce the errors.
+    \item If no errors were observed in a particular test,
+    state the tests performed and their limitations.
+\end{itemize}
+
+\section{Observed Errors}
+
+[Describe the errors or failure cases observed during
+testing and provide evidence where possible.]
+
+\section{Possible Causes}
+
+[Discuss the possible reasons for the errors, supported
+by experimental observations.]
+
+\section{Improvement Strategies}
+
+[Explain how the model or system could be improved.
+Distinguish implemented improvements from future suggestions.]
+
+% ==================================================
+\chapter{Project Proof and Implementation Evidence}
+
+\textbf{Instructions:}
+Submit verifiable evidence that the project has been
+implemented. Include the repository link and screenshots
+of the running application, if deployed.
+
+\section{GitHub Repository}
+
+\textbf{Repository URL:}
+\url{https://github.com/your-username/your-repository}
+
+Replace the sample URL with your team's actual repository.
+The repository should contain the source code, README,
+setup instructions, and other essential project files.
+
+\section{Deployment Evidence}
+
+\textbf{Deployment URL (if applicable):}
+\url{https://your-deployment-url.example}
+
+If the project has not been deployed, state
+``Not deployed'' and explain how it can be executed locally.
+
+\section{Deployed Application Screenshot}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering
+Insert a screenshot of your deployed application here.}}
+% \includegraphics[width=0.85\textwidth]{deployment.png}
+\caption{Deployed Project Interface}
+\label{fig:deployment}
+\end{figure}
+
+[Explain what the screenshot demonstrates. Do not include
+passwords, API keys, private tokens, or other credentials.]
+
+% ==================================================
+\chapter{Conclusion and Future Work}
+
+\textbf{Instructions:}
+\begin{itemize}
+    \item Summarize the problem addressed and the proposed solution.
+    \item State the main findings based on actual results.
+    \item Explain whether the project objectives were achieved.
+    \item Mention important limitations.
+    \item Suggest realistic directions for future improvement.
+\end{itemize}
+
+\section{Conclusion}
+
+[Summarize the project, its implementation, and the
+most important findings. Support claims using your results.]
+
+\section{Future Work}
+
+[Describe possible extensions, additional experiments,
+or improvements that could be explored in future.]
+
+% ==================================================
+\chapter{Acknowledgement of AI Usage}
+
+\textbf{Instructions:}
+\begin{itemize}
+    \item Disclose whether AI tools were used during the project.
+    \item Mention the tool names and the purpose of their use.
+    \item Explain which outputs were reviewed, tested, or modified
+    by the team.
+    \item Clearly identify any AI-generated code, text, or ideas
+    that materially contributed to the work, as required by
+    the course or institutional policy.
+    \item Students remain responsible for the correctness of
+    the code, results, citations, and final report.
+\end{itemize}
+
+\section{AI Usage Statement}
+
+[Complete one of the following statements and customize it.]
+
+\textbf{If AI tools were used:}
+
+We used [AI tool names] for [specific purposes, such as
+brainstorming, code assistance, debugging, or language editing].
+The team reviewed and validated the relevant outputs.
+All experiments and reported results were checked against
+our actual implementation. The team takes responsibility
+for the final submission.
+
+\textbf{If AI tools were not used:}
+
+No generative AI tools were used in preparing this report
+or developing the project.
+
+[Modify the statement to reflect actual usage. Do not
+claim that AI was or was not used inaccurately.]
+
+% ==================================================
+\begin{thebibliography}{99}
+
+\bibitem{ref1}
+[Author(s)], ``[Title of research paper],''
+\textit{[Journal or Conference Name]}, [Volume, Issue],
+pp. [Page numbers], [Year].
+DOI: [DOI or URL].
+
+\bibitem{ref2}
+[Author(s)], ``[Title of research paper],''
+\textit{[Journal or Conference Name]}, [Year].
+DOI: [DOI or URL].
+
+\bibitem{ref3}
+[Author(s)], ``[Title of research paper],''
+\textit{[Journal or Conference Name]}, [Year].
+DOI: [DOI or URL].
+
+\bibitem{ref4}
+[Author(s)], ``[Title of research paper],''
+\textit{[Journal or Conference Name]}, [Year].
+DOI: [DOI or URL].
+
+\bibitem{ref5}
+[Author(s)], ``[Title of research paper],''
+\textit{[Journal or Conference Name]}, [Year].
+DOI: [DOI or URL].
+
+\end{thebibliography}
+
+\end{document}

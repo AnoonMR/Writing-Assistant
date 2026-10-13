@@ -1,0 +1,21 @@
+{
+  "spell_corrector": {
+    "top1_accuracy_synthetic_typos": 0.76,
+    "correct": 152,
+    "total": 200,
+    "top1_accuracy_real_world_misspellings": 0.38,
+    "real_world_correct": 190,
+    "real_world_total": 500,
+    "confusion_matrix_train_pairs": 12356
+  },
+  "ngram_lm": {
+    "bigram_perplexity_on_held_out": 5595.97,
+    "trigram_perplexity_on_held_out": 13641.36,
+    "test_sentences": 5428
+  },
+  "pos_tagger": {
+    "word_accuracy": 0.9174,
+    "correct_tags": 8242,
+    "total_tags": 8984
+  }
+}
