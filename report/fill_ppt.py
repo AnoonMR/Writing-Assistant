@@ -291,18 +291,13 @@ set_bullets(find_shape(s, "TextBox 4"), [
 ])
 
 # ---------------------------------------------------------------- Slide 12: AI Usage Acknowledgement
-# Wording kept from the previous version -- to be finalised with the team
-# before submission.
+# Wording approved by the teacher: a short acknowledgement is enough.
 s = slides[11]
 clear_text(find_shape(s, "TextBox 2"))
 set_bullets(find_shape(s, "TextBox 4"), [
-    "Claude (Anthropic's Claude Code) was used throughout: implementing and debugging all 5 modules, "
-    "building the evaluation harness, drafting this report/deck, and literature search",
-    "All code was executed and tested by the team against real data at every step; "
-    "every metric shown here comes from actually running the code",
-    "Bugs found during testing (e.g. the single-letter spelling-correction issue) were fixed and re-verified",
-    "The team takes full responsibility for the correctness of the final code, results, and this report",
-])
+    "This project was developed with the assistance of Claude (Anthropic), "
+    "an AI tool, which was used for code implementation and debugging.",
+], size=20, bullet=False)
 
 # ---------------------------------------------------------------- Slide 13: References
 s = slides[12]
