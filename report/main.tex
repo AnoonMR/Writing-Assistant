@@ -62,9 +62,9 @@
 \textbf{Submitted by}\\[0.3cm]
 
 \begin{tabular}{ll}
-Student 1: & Anoon M R \\
-Student 2: & [Name and USN] \\
-Student 3: & [Name and USN] \\
+Student 1: & Anoon M R (25MCAR0179) \\
+Student 2: & Aman Kumawat (25MCAR0023) \\
+Student 3: & Adithya Krishnan T N (25MCAR0003) \\
 \end{tabular}
 
 \vfill
@@ -73,7 +73,7 @@ Student 3: & [Name and USN] \\
 \textbf{Faculty:} Dr. Sharal Coelho\\
 \textbf{Academic Year:} 2026--2027\\[0.5cm]
 
-\textbf{Submission Date:} [DD/MM/YYYY]
+\textbf{Submission Date:} \underline{\hspace{4.5cm}}
 
 \end{titlepage}
 
@@ -306,7 +306,11 @@ updates live as the user types.
 
 \begin{itemize}
     \item \textbf{Dataset name and source:} Brown Corpus, downloaded
-    through NLTK (\texttt{nltk.corpus.brown}) and cleaned in Activity 1.
+    from the NLTK data repository (\url{https://www.nltk.org/nltk_data/})
+    using NLTK's downloader, together with the Universal tagset mapping:
+    \texttt{nltk.download('brown')} and
+    \texttt{nltk.download('universal\_tagset')}. It is read through
+    \texttt{nltk.corpus.brown} and was cleaned in Activity 1.
     \item \textbf{Number of samples:} 54,286 cleaned sentences (from
     57,340 raw sentences) for the language model; 54,270 POS-tagged
     sentences (Universal tagset) for the HMM tagger.
@@ -316,7 +320,8 @@ updates live as the user types.
     DET, NOUN, NUM, PRON, PRT, VERB.
     \item \textbf{Misspelling corpus (channel model):}
     \texttt{spell-errors.txt} from Peter Norvig's \emph{Natural Language
-    Corpus Data} \cite{norvig2009}: 7,841 correct words, each listed with
+    Corpus Data} \cite{norvig2009}, downloaded from
+    \url{https://norvig.com/ngrams/spell-errors.txt}: 7,841 correct words, each listed with
     the ways real people misspelled it, giving 38,218
     (correct word, misspelling) pairs in total. This corpus is used to
     learn the spell corrector's confusion matrix and to test it on

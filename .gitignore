@@ -3,3 +3,11 @@ __pycache__/
 
 # Local copy of the report template (already in template/)
 Student_Activity___Report.zip
+
+# Old plain-template deck, replaced by Activity_2_Presentation_Designed.pptx
+report/Activity_2_Presentation.pptx
+report/Activity_2_Presentation.pdf
+report/fill_ppt.py
+
+# Office lock files
+~$*

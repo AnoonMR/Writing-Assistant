@@ -7,7 +7,7 @@ correction with a real learned confusion matrix, and a live dark-themed
 web UI.
 
 **Report:** [`report/main.pdf`](report/main.pdf) ·
-**Slides:** [`report/Activity_2_Presentation.pptx`](report/Activity_2_Presentation.pptx) ·
+**Slides:** [`report/Activity_2_Presentation_Designed.pptx`](report/Activity_2_Presentation_Designed.pptx) ([PDF](report/Activity_2_Presentation_Designed.pdf)) ·
 **Activity 1 (dataset download + preprocessing):** [AnoonMR/nlp-a1](https://github.com/AnoonMR/nlp-a1)
 
 ## Setup
