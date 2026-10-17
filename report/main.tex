@@ -604,8 +604,12 @@ an edit-distance-2 search.
 \textbf{POS Tagger -- NOUN confusions.} The largest off-diagonal cells
 in Figure~\ref{fig:confusion} are NOUN predicted as ADJ (83), DET (80)
 and CONJ (72), plus mutual NOUN/VERB confusion (53--57 each way). These
-are concentrated on lexically ambiguous words (e.g.\ ``that'') where
-the bigram HMM's one-tag context window cannot fully disambiguate.
+are concentrated on words that can be either a noun or an adjective
+(e.g.\ ``green'', ``public'') or a noun or a verb (``cut'', ``show''),
+and on proper names never seen in training (124 of the 429 NOUN
+errors), where the bigram HMM's one-tag context window cannot fully
+disambiguate. Ambiguous function words such as ``that'' cause a
+separate, smaller set of DET/PRON/ADP errors.
 
 \textbf{N-Gram LM -- high perplexity, and trigram higher than bigram.}
 Bigram perplexity is 5,596 and trigram perplexity is 13,641 on held-out

@@ -542,7 +542,7 @@ def slide_errors(prs):
               "“ovr” used to give “or” and “wht” gave “who” — both now give “over” and “what”, "
               "thanks to the learned confusion matrix. Single-letter “I” → “in” also fixed."),
              ("POS confusions", AMBER,
-              "NOUN mix-ups on ambiguous words like “that” — a bigram HMM only sees one previous tag."),
+              "NOUN mix-ups on noun/adjective words (green, public) and unseen names — a bigram HMM only sees one previous tag."),
              ("Next fixes", PINK_L,
               "Prefer 1-edit candidates · rank spelling in context · Kneser-Ney smoothing · trigram HMM.")]
     for i, (head, col, body) in enumerate(right):
