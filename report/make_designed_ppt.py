@@ -392,7 +392,7 @@ def slide_data(prs):
     text(s, 7.1, by + 0.8, 5.33, 0.7,
          ["Applied to all three datasets — every score is on unseen data.",
           [("Tools: ", {"bold": True, "color": TEXT}),
-           ("Python 3.12 · Flask 3.1.3 · matplotlib · no GPU", {})]],
+           ("Python 3.12 · Flask 3.1.3 · matplotlib", {})]],
          size=13, color=MUTED, space_after=6)
 
 
